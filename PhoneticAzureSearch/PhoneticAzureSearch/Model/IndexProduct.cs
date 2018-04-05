@@ -9,14 +9,14 @@ namespace PhoneticAzureSearch.Model
     [SerializePropertyNamesAsCamelCase]
     public class IndexProduct
     {
-        private int _id;
+        private string _id;
         private string _name;
         private string _description;
         private string _country;
 
         [System.ComponentModel.DataAnnotations.Key]
         [IsFilterable, IsSearchable, IsSortable]
-        public int Id { get => _id; set => _id = value; }
+        public string Id { get => _id; set => _id = value; }
 
         [IsSearchable, IsSortable]
         [Analyzer(AnalyzerName.AsString.EnLucene)]
@@ -33,7 +33,7 @@ namespace PhoneticAzureSearch.Model
         [IsSearchable, IsSortable]
         [Analyzer(AnalyzerName.AsString.EnLucene)]
         public string Country { get => _country; set => _country = value; }
-
+        
         [IsSearchable, IsSortable]
         [Analyzer("PhoneticCustomnAlyzer")]
         public string CountryPhonetic { get => _country; set => _country = value; }
