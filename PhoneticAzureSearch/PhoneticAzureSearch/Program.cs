@@ -14,23 +14,138 @@ namespace PhoneticAzureSearch
     {
         static void Main(string[] args)
         {
-            //UploadData();
-            //Console.WriteLine("Data uploaded");
+            UploadData();
+            Console.WriteLine("Data uploaded");
 
-            var result1 = SearchPhrase("kia");
-            PrintResult(result1);
+            SearchJustPhonetic();
 
-            var result2 = SearchPhrase("qia");
-            PrintResult(result2);
+            SearchJustFuzzyLucene();
 
 
             Console.ReadKey();
         }
 
+        static void SearchJustPhonetic()
+        {
+            Console.WriteLine("::::::: SearchJustPhonetic :::::::");
+            Console.WriteLine();
+
+            var result1 = SearchPhrase("kia", columns: "namePhonetic");
+            PrintResult(result1);
+
+            var result2 = SearchPhrase("qia", columns: "namePhonetic");
+            PrintResult(result2);
+
+            var result3 = SearchPhrase("Mercedes-Benz", columns: "namePhonetic");
+            PrintResult(result3);
+
+            var result4 = SearchPhrase("Mersedes-Bens", columns: "namePhonetic");
+            PrintResult(result4);
+
+            var result5 = SearchPhrase("Mazda", columns: "namePhonetic");
+            PrintResult(result5);
+
+            var result6 = SearchPhrase("Masda", columns: "namePhonetic");
+            PrintResult(result6);
+
+            var result7 = SearchPhrase("Lincoln", columns: "namePhonetic");
+            PrintResult(result7);
+
+            var result8 = SearchPhrase("Lyncoln", columns: "namePhonetic");
+            PrintResult(result8);
+
+            var result9 = SearchPhrase("Lyncon", columns: "namePhonetic");
+            PrintResult(result9);
+
+            var result10 = SearchPhrase("Jeep", columns: "namePhonetic");
+            PrintResult(result10);
+
+            var result11 = SearchPhrase("Geep", columns: "namePhonetic");
+            PrintResult(result11);
+        }
+
+        static void SearchJustFuzzyLucene()
+        {
+            Console.WriteLine("::::::: SearchJustFuzzyLucene :::::::");
+            Console.WriteLine();
+
+            var result1 = SearchPhrase("kia~", lucene: true, columns: "name");
+            PrintResult(result1);
+
+            var result2 = SearchPhrase("qia~", lucene: true, columns: "name");
+            PrintResult(result2);
+
+            var result3 = SearchPhrase("Mercedes-Benz~", lucene: true, columns: "name");
+            PrintResult(result3);
+
+            var result4 = SearchPhrase("Mersedes-Bens~", lucene: true, columns: "name");
+            PrintResult(result4);
+
+            var result5 = SearchPhrase("Mazda~", lucene: true, columns: "name");
+            PrintResult(result5);
+
+            var result6 = SearchPhrase("Masda~", lucene: true, columns: "name");
+            PrintResult(result6);
+
+            var result7 = SearchPhrase("Lincoln~", lucene: true, columns: "name");
+            PrintResult(result7);
+
+            var result8 = SearchPhrase("Lyncoln~", lucene: true, columns: "name");
+            PrintResult(result8);
+
+            var result9 = SearchPhrase("Lyncon~", lucene: true, columns: "name");
+            PrintResult(result9);
+
+            var result10 = SearchPhrase("Jeep~", lucene: true, columns: "name");
+            PrintResult(result10);
+
+            var result11 = SearchPhrase("Geep~", lucene: true, columns: "name");
+            PrintResult(result11);
+        }
+
+        static void SearchPhoneticAndFuzzyLucene()
+        {
+            Console.WriteLine("::::::: SearchJustFuzzyLucene :::::::");
+            Console.WriteLine();
+
+            var result1 = SearchPhrase("kia||kia~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result1);
+
+            var result2 = SearchPhrase("qia||qia~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result2);
+
+            var result3 = SearchPhrase("Mercedes-Benz||Mercedes-Benz~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result3);
+
+            var result4 = SearchPhrase("Mersedes-Bens||Mersedes-Bens~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result4);
+
+            var result5 = SearchPhrase("Mazda||Mazda~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result5);
+
+            var result6 = SearchPhrase("Masda||Masda~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result6);
+
+            var result7 = SearchPhrase("Lincoln||Lincoln~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result7);
+
+            var result8 = SearchPhrase("Lyncoln||Lyncoln~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result8);
+
+            var result9 = SearchPhrase("Lyncon||Lyncon~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result9);
+
+            var result10 = SearchPhrase("Jeep||Jeep~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result10);
+
+            var result11 = SearchPhrase("Geep||Geep~", lucene: true, columns: "name,namePhonetic");
+            PrintResult(result11);
+        }
+        
         static void PrintResult(DocumentSearchResult<IndexProduct> result)
         {
             Console.WriteLine("Total: {0}", result.Count);
-            foreach(var r in result.Results)
+            foreach (var r in result.Results)
                 Console.WriteLine("{0} - {1} | score:{2}", r.Document.Id, r.Document.Name, r.Score);
 
             Console.WriteLine();
@@ -42,7 +157,7 @@ namespace PhoneticAzureSearch
             {
                 TokenFilters = new List<TokenFilterName> { TokenFilterName.Phonetic, TokenFilterName.AsciiFolding, TokenFilterName.Lowercase },
                 Tokenizer = TokenizerName.Standard,
-                Name = "PhoneticCustomnAlyzer"
+                Name = "PhoneticCustomAnalyzer"
             };
 
             return analyzer;
@@ -78,15 +193,26 @@ namespace PhoneticAzureSearch
             return indexClient;
         }
 
-        static DocumentSearchResult<IndexProduct> SearchPhrase(string phrase)
+        static DocumentSearchResult<IndexProduct> SearchPhrase(string phrase, params string[] columns)
         {
+            return SearchPhrase(phrase, false, columns);
+        }
+
+        static DocumentSearchResult<IndexProduct> SearchPhrase(string phrase, bool lucene = false, params string[] columns)
+        {
+            Console.WriteLine("Phrase: {0}", phrase);
+            Console.WriteLine("Lucene Sintax: {0}", lucene ? "Yes" : "No");
+            Console.WriteLine("Columns: {0}", string.Join(',', columns));
+
             var indexClient = CreateIndexAndGetClient();
 
             var data = indexClient.Documents.Search<IndexProduct>(phrase, new SearchParameters()
             {
-                SearchFields = new List<string>() { "namePhonetic" },
+                SearchFields = new List<string>(columns),
                 SearchMode = SearchMode.Any,
-                IncludeTotalResultCount = true
+                IncludeTotalResultCount = true,
+                QueryType = lucene ? QueryType.Full : QueryType.Simple, //For Lucene Sintax,
+                Top = 1000
             });
 
             return data;

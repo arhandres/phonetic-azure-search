@@ -23,7 +23,7 @@ namespace PhoneticAzureSearch.Model
         public string Name { get => _name; set => _name = value; }
 
         [IsSearchable, IsSortable]
-        [Analyzer("PhoneticCustomnAlyzer")]
+        [Analyzer("PhoneticCustomAnalyzer")]
         public string NamePhonetic { get => _name; set => _name = value; }
 
         [IsSearchable, IsSortable]
@@ -35,7 +35,7 @@ namespace PhoneticAzureSearch.Model
         public string Country { get => _country; set => _country = value; }
         
         [IsSearchable, IsSortable]
-        [Analyzer("PhoneticCustomnAlyzer")]
+        [Analyzer("PhoneticCustomAnalyzer")]
         public string CountryPhonetic { get => _country; set => _country = value; }
     }
 }
