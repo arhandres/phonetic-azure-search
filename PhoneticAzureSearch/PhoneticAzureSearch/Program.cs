@@ -201,7 +201,7 @@ namespace PhoneticAzureSearch
         static DocumentSearchResult<IndexProduct> SearchPhrase(string phrase, bool lucene = false, params string[] columns)
         {
             Console.WriteLine("Phrase: {0}", phrase);
-            Console.WriteLine("Lucene Sintax: {0}", lucene ? "Yes" : "No");
+            Console.WriteLine("Lucene Syntax: {0}", lucene ? "Yes" : "No");
             Console.WriteLine("Columns: {0}", string.Join(',', columns));
 
             var indexClient = CreateIndexAndGetClient();
@@ -211,7 +211,7 @@ namespace PhoneticAzureSearch
                 SearchFields = new List<string>(columns),
                 SearchMode = SearchMode.Any,
                 IncludeTotalResultCount = true,
-                QueryType = lucene ? QueryType.Full : QueryType.Simple, //For Lucene Sintax,
+                QueryType = lucene ? QueryType.Full : QueryType.Simple, //For Lucene Syntax,
                 Top = 1000
             });
 
