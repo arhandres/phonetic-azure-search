@@ -17,12 +17,54 @@ namespace PhoneticAzureSearch
             UploadData();
             Console.WriteLine("Data uploaded");
 
+            SearchWithoutPhonetic();
+
             SearchJustPhonetic();
 
             SearchJustFuzzyLucene();
 
+            SearchPhoneticAndFuzzyLucene();
 
             Console.ReadKey();
+        }
+
+        static void SearchWithoutPhonetic()
+        {
+            Console.WriteLine("::::::: SearchWithoutPhonetic :::::::");
+            Console.WriteLine();
+
+            var result1 = SearchPhrase("kia", columns: "name");
+            PrintResult(result1);
+
+            var result2 = SearchPhrase("qia", columns: "name");
+            PrintResult(result2);
+
+            var result3 = SearchPhrase("Mercedes-Benz", columns: "name");
+            PrintResult(result3);
+
+            var result4 = SearchPhrase("Mersedes-Bens", columns: "name");
+            PrintResult(result4);
+
+            var result5 = SearchPhrase("Mazda", columns: "name");
+            PrintResult(result5);
+
+            var result6 = SearchPhrase("Masda", columns: "name");
+            PrintResult(result6);
+
+            var result7 = SearchPhrase("Lincoln", columns: "name");
+            PrintResult(result7);
+
+            var result8 = SearchPhrase("Lyncoln", columns: "name");
+            PrintResult(result8);
+
+            var result9 = SearchPhrase("Lyncon", columns: "name");
+            PrintResult(result9);
+
+            var result10 = SearchPhrase("Jeep", columns: "name");
+            PrintResult(result10);
+
+            var result11 = SearchPhrase("Geep", columns: "name");
+            PrintResult(result11);
         }
 
         static void SearchJustPhonetic()
@@ -105,43 +147,43 @@ namespace PhoneticAzureSearch
 
         static void SearchPhoneticAndFuzzyLucene()
         {
-            Console.WriteLine("::::::: SearchJustFuzzyLucene :::::::");
+            Console.WriteLine("::::::: SearchPhoneticAndFuzzyLucene :::::::");
             Console.WriteLine();
 
-            var result1 = SearchPhrase("kia||kia~", lucene: true, columns: "name,namePhonetic");
+            var result1 = SearchPhrase("kia || kia~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result1);
 
-            var result2 = SearchPhrase("qia||qia~", lucene: true, columns: "name,namePhonetic");
+            var result2 = SearchPhrase("qia || qia~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result2);
 
-            var result3 = SearchPhrase("Mercedes-Benz||Mercedes-Benz~", lucene: true, columns: "name,namePhonetic");
+            var result3 = SearchPhrase("Mercedes-Benz | |Mercedes-Benz~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result3);
 
-            var result4 = SearchPhrase("Mersedes-Bens||Mersedes-Bens~", lucene: true, columns: "name,namePhonetic");
+            var result4 = SearchPhrase("Mersedes-Bens || Mersedes-Bens~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result4);
 
-            var result5 = SearchPhrase("Mazda||Mazda~", lucene: true, columns: "name,namePhonetic");
+            var result5 = SearchPhrase("Mazda || Mazda~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result5);
 
-            var result6 = SearchPhrase("Masda||Masda~", lucene: true, columns: "name,namePhonetic");
+            var result6 = SearchPhrase("Masda || Masda~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result6);
 
-            var result7 = SearchPhrase("Lincoln||Lincoln~", lucene: true, columns: "name,namePhonetic");
+            var result7 = SearchPhrase("Lincoln || Lincoln~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result7);
 
-            var result8 = SearchPhrase("Lyncoln||Lyncoln~", lucene: true, columns: "name,namePhonetic");
+            var result8 = SearchPhrase("Lyncoln || Lyncoln~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result8);
 
-            var result9 = SearchPhrase("Lyncon||Lyncon~", lucene: true, columns: "name,namePhonetic");
+            var result9 = SearchPhrase("Lyncon || Lyncon~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result9);
 
-            var result10 = SearchPhrase("Jeep||Jeep~", lucene: true, columns: "name,namePhonetic");
+            var result10 = SearchPhrase("Jeep || Jeep~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result10);
 
-            var result11 = SearchPhrase("Geep||Geep~", lucene: true, columns: "name,namePhonetic");
+            var result11 = SearchPhrase("Geep || Geep~", lucene: true, columns: "name,namePhonetic");
             PrintResult(result11);
         }
-        
+
         static void PrintResult(DocumentSearchResult<IndexProduct> result)
         {
             Console.WriteLine("Total: {0}", result.Count);
